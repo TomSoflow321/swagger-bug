@@ -1,5 +1,6 @@
 package com.tomsoflow.swagger.bug.configuration;
 
+import com.tomsoflow.swagger.bug.SwaggerBugApplication;
 import com.tomsoflow.swagger.bug.configuration.security.InjectRoleFilter;
 import com.tomsoflow.swagger.bug.web.TestApi;
 import org.springframework.context.annotation.Bean;
@@ -12,10 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -53,13 +52,11 @@ public class RestConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public Docket restApi() {
+    public Docket freightOrderRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .ignoredParameterTypes(Authentication.class)
                 .select()
-                //.apis(RequestHandlerSelectors.withMethodAnnotation(RequestMapping.class))
-                .apis(RequestHandlerSelectors.any())
-//                .paths(PathSelectors.ant("/**"))
+                .apis(RequestHandlerSelectors.basePackage(SwaggerBugApplication.class.getPackageName()))
                 .build()
                 .apiInfo(apiInfo());
     }
